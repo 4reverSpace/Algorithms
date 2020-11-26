@@ -1,0 +1,50 @@
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <chrono>
+#include "stdio.h"
+int main(int argc,char *argv[])
+{
+    int n;
+    FILE *file;
+    if ((file=fopen(argv[1],"r"))==NULL) {
+        std::cout << "Error opening file " << argv[1];
+        return 0;
+    }
+    fscanf(file,"%d",&n);
+    int a[n];
+    for (int i=0;i<n;i++)
+    {
+        fscanf(file,"%d",&a[i]);
+    }
+    fclose(file);//закончился скан данных a[n]- массив элементов,n- кол-во элементов
+    auto t1= std::chrono::high_resolution_clock::now(); //часы
+    for (int step = n/2;step>0; step=step/2)
+    {
+        int flags=1;
+        for (int i=0;i<step;i++)
+        {
+            while(flags)
+            {
+                flags=1;
+                for(int j=i;j<n-step;j++)
+                {
+                    if (a[j]>a[j+step])
+                    {
+                        a[j]^=a[j+step]^=a[j]^=a[j+step];
+                        flags++;
+                    }
+                }
+                flags--;
+            }
+        }
+    }
+
+    auto t2=std::chrono::high_resolution_clock::now();//часы
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);//часы
+    std::cout<<n<<"\r";
+    std::cout<<duration.count()<<"\r";//часы
+    for (int i=0;i<n;i++)
+        std::cout<<a[i]<<" ";
+    return 0;
+}
