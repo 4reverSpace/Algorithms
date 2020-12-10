@@ -1,27 +1,24 @@
 #include <iostream>
 #include <sstream>
+#include <string>
 #include <chrono>
 #include "stdio.h"
-
 int main(int argc,char *argv[])
 {
     int n;
-    FILE *fi;
-    if ((fi=fopen(argv[1],"r"))==NULL) {
+    FILE *file;
+    if ((file=fopen(argv[1],"r"))==NULL) {
         std::cout << "Error opening file " << argv[1];
         return 0;
     }
-    std::cin>>n;
-
-    fscanf(fi,"%d",&n);
+    fscanf(file,"%d",&n);
     int a[n];
     for (int i=0;i<n;i++)
     {
-        fscanf(fi,"%d",&a[i]);
-        std::cin>>a[i];
+        fscanf(file,"%d",&a[i]);
     }
-    fclose(fi);//закончился скан данных a[n]- массив элементов,n- кол-во элементов
-    int i=1,p=1,flag=1,o=0; // ген шагов
+    fclose(file);//закончился скан данных a[n]- массив элементов,n- кол-во элементов
+    int i=1,p=1,flag=1,o=0;
     int *s;
     s=new int[n];
     s[0]=1;
@@ -34,13 +31,13 @@ int main(int argc,char *argv[])
             i++;
             o++;
         }
-        else if (p*3<=n)
+        if (p*3<=n)
         {
             s[i]=p*3;
             i++;
             o++;
         }
-        else if (p*6<=n) {
+        if (p*6<=n) {
             p *= 6;
             s[i] = p;
             i++;
@@ -49,14 +46,13 @@ int main(int argc,char *argv[])
         }
     }
     auto t1= std::chrono::high_resolution_clock::now(); //часы
-    int flags=1; // сама сортировка
     for (int i=o;i>=0;i--) {
     int step=s[i];
-        for (int j = 0; j < step; j++) {
-        flags = 1;
+        for (int l = 0; l < step; l++) {
+        int flags = 1;
             while (flags) {
             flags = 1;
-                for (int j = i; j < n - step; j++) {
+                for (int j = l; j < n - step; j+=step) {
                     if (a[j] > a[j + step]) {
                         a[j] ^= a[j + step] ^= a[j] ^= a[j + step];
                         flags++;
@@ -67,11 +63,10 @@ int main(int argc,char *argv[])
         }
     }
     auto t2=std::chrono::high_resolution_clock::now();//часы
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1);//часы
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);//часы
     std::cout<<n<<"\r";
     std::cout<<duration.count()<<"\r";//часы
     for (int i=0;i<n;i++)
         std::cout<<a[i]<<" ";
-    delete [] s;
     return 0;
 }
