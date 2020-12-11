@@ -15,10 +15,12 @@ void checktree(int *array,int len,int i)
         if (child_1 <= child_2) {
             std::swap(array[i], array[2 * i + 2]);
             checktree(array, len, 2 * i + 2);
+            return;
         }
         else {
             std::swap(array[i], array[2 * i + 1]);
             checktree(array, len, 2 * i + 1);
+            return;
         }
     }
 }
