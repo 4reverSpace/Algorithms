@@ -11,13 +11,16 @@ void checktree(int *array,int len,int i)
         child_2=parent;
     if( parent>=child_1 && parent>=child_2)
         return;
-    else if(child_1<=child_2) {
-        std::swap(array[i],array[2*i+2]);
-        checktree(array, len, 2 * i + 2);
+    else {
+        if (child_1 <= child_2) {
+            std::swap(array[i], array[2 * i + 2]);
+            checktree(array, len, 2 * i + 2);
+        }
+        else {
+            std::swap(array[i], array[2 * i + 1]);
+            checktree(array, len, 2 * i + 1);
+        }
     }
-    else
-        std::swap(array[i],array[2*i+1]);
-        checktree(array,len,2*i+1);
 }
 
 int main(int argc,char *argv[])
