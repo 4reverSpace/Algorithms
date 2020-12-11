@@ -56,17 +56,16 @@ void mqs(int * ar, int left,int right,int deep,int max_deep)
 int main(int argc,char *argv[])
 {
     int n;
-    //std::ifstream file;
-    //file.open(argv[1]);
-    //file >>n;
-    std::cin>>n;
+    std::ifstream file;
+    file.open(argv[1]);
+    file >>n;
     int max_deep=log(n);
     int a[n];
     for (int i=0;i<n;i++)
     {
-        std::cin>>a[i];
+        file >>a[i];
     }
-    //file.close();//закончился скан данных a[n]- массив элементов,n- кол-во элементов
+    file.close();//закончился скан данных a[n]- массив элементов,n- кол-во элементов
     int max_i=0;
     while(max_i*2+3<=n-1)
         max_i++; //определение последнего i
